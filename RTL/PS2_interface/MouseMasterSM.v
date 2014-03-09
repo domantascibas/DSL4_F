@@ -194,11 +194,12 @@ always@* begin
 	//This byte will be the first of three, the status byte.
 	//If a byte arrives, but is corrupted, then we re-initialise
 	4'h9: begin
-		if(BYTE_READY & (BYTE_ERROR_CODE == 2'b00)) begin
+		if(BYTE_ERROR_CODE != 2'b00)
+			Next_State = 4'h0;
+		else if(BYTE_READY)begin
 			Next_State = 4'hA;
 			Next_Status = BYTE_READ;
-		end else
-			Next_State = 4'h0;
+		end
 		Next_Counter = 0;
 		Next_ReadEnable = 1'b1;
 	end
@@ -211,8 +212,8 @@ always@* begin
 			Next_Counter = 0;
 		end else if(BYTE_READY) begin
 			Next_State = 4'hB;
-			Next_Counter = 0;
 			Next_Dx = BYTE_READ;
+			Next_Counter = 0;
 		end else
 			Next_Counter = Curr_Counter + 1'b1;
 		Next_ReadEnable = 1'b1;
@@ -226,8 +227,8 @@ always@* begin
 			Next_Counter = 0;
 		end else if(BYTE_READY) begin
 			Next_State = 4'hC;
-			Next_Counter = 0;
 			Next_Dy = BYTE_READ;
+			Next_Counter = 0;
 		end else
 			Next_Counter = Curr_Counter + 1'b1;
 		Next_ReadEnable = 1'b1;

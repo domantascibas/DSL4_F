@@ -28,10 +28,9 @@ module MouseTransceiver(
 	inout DATA_MOUSE,
 
 	// Mouse data information
-	output reg [2:0] MouseStatus,
+	output reg [7:0] MouseStatus,
 	output reg signed [7:0] MouseX,
 	output reg signed [7:0] MouseY
-	
 	//output [7:0] LED
 );
 
@@ -170,13 +169,10 @@ ila i_ila(
 	.TRIG4(ByteRead)
 );
 
-
 //Pre-processing - handling of overflow and signs.
 //More importantly, this keeps tabs on the actual X/Y
 //location of the mouse.
-//reg [2:0] MouseStatus;
-//reg signed [7:0] MouseX;
-//reg signed [7:0] MouseY;
+
 wire signed [8:0] MouseDx;
 wire signed [8:0] MouseDy;
 wire signed [8:0] MouseNewX;
@@ -197,7 +193,7 @@ always@(posedge CLK) begin
 		MouseY <= MouseLimitY/2;
 	end else if (SendInterrupt) begin
 		//Status is stripped of all unnecessary info
-		MouseStatus <= MouseStatusRaw[3:0];
+		MouseStatus <= MouseStatusRaw[7:0];
 		//X is modified based on DX with limits on max and min
 		if(MouseNewX < 0)
 			MouseX <= 0;
