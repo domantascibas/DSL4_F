@@ -28,8 +28,8 @@ module IRWrapper(
     input CLK,
     input RST,
 	 //Bus Interface Inputs
-	 input [7:0] ADDRESS_IN,
-	 inout [7:0] DATA,
+	 input [7:0] ADDR_IN,
+	 input BUS_WE,
     input [3:0] COMMAND,
 	 input [3:0] COLOUR_SEL,
     //IR Output
@@ -45,12 +45,12 @@ module IRWrapper(
 	wire green;
 	wire blue;
 	wire red;
-	wire reset;
+	reg reset;
 	
 	//Condition that ensures the module is only operating when the address bus is set to the base address
 	//of the IR Transmitter module (0x90).
 	always @ (posedge CLK) begin	
-		if ((DATA_ADDRESS_IN != BaseAddrIR) |S| (RST == 1'b1))
+		if (((ADDR_IN != BaseAddrIR) & BUS_WE) || (RST == 1'b1))
 			reset <= 1'b1;
 		else
 			reset <= 1'b0;
