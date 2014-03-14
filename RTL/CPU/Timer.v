@@ -62,7 +62,7 @@ module Timer(
 	always @ (posedge CLK) begin
 		if (RST) 
 			interrupt_en <= InitialInterruptEnable;
-		else if ((BUS_ADDR == TimerBusAddr + 8'h03) & BUS_WE)
+		else if ((BUS_ADDR == TimerBaseAddr + 8'h03) & BUS_WE)
 			interrupt_en <= BUS_DATA[0];
 		end
 		
@@ -90,7 +90,7 @@ module Timer(
 		if (RST | (BUS_ADDR == TimerBaseAddr + 8'h02))
 			timer <= 32'd0;
 		else begin
-			if (!down_counter)
+			if (down_counter == 32'd0)
 				timer <= timer + 1;
 			else
 				timer <= timer;
@@ -107,10 +107,9 @@ module Timer(
 			last_time <= 32'd0;
 			end
 		else if ((last_time + interrupt_rate) == timer) begin
-			if (interrupt_en) begin
+			if (interrupt_en)
 				target_reached <= 1'b1;
-				last_time <= Timer;
-				end
+			last_time <= timer;
 			end
 		else
 			target_reached <= 1'b0;
@@ -134,7 +133,7 @@ module Timer(
 	reg transmit_timer_value;
 	
 	always @ (posedge CLK) begin
-		if (BUS_ADDR == TimerBusAddr)
+		if (BUS_ADDR == TimerBaseAddr)
 			transmit_timer_value <= 1'b1;
 		else
 			transmit_timer_value <= 1'b0;
