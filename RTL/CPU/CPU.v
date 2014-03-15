@@ -163,7 +163,10 @@ module CPU(
     RETURN_0               = 8'h4B, // wait for new op address to settle. end op.
 
     DEREF_A                = 8'h50, // Indirect mem access through reg A
-    DEREF_B                = 8'h51; // Indirect mem access through reg B
+    DEREF_B                = 8'h51, // Indirect mem access through reg B
+	DEREF_1				   = 8'h52,	// wait for the value from RAM to arrive
+	DEREF_2				   = 8'h53, // write data from BusDataIn to the correct Reg
+	DEREF_3				   = 8'h54;	// wait for new op address to settle. end op.
 
 
     // Sequential part of the State Machine.
@@ -427,21 +430,21 @@ module CPU(
 
         RETURN_0: NextState = CHOOSE_OPP;
 		
-		DE_REFERENCE_A: begin
+		DEREF_A: begin
 			NextRegSelect = 1'b0;
 			NextState = DE_REFERENCE_1;
 			NextBusAddr = CurrRegA;
 		end
 	
-		DE_REFERENCE_B: begin
+		DEREF_B: begin
 			NextRegSelect = 1'b1;
 			NextState = DE_REFERENCE_1;
 			NextBusAddr = CurrRegB;
 		end
 	
-		DE_REFERENCE_1: NextState = DE_REFERENCE_2;
+		DEREF_1: NextState = DE_REFERENCE_2;
 	
-		DE_REFERENCE_2: begin
+		DEREF_2: begin
 			NextState = DE_REFERENCE_3;
 			if(!CurrRegSelect)
 				NextRegA = BusDataIn;
@@ -449,7 +452,7 @@ module CPU(
 				NextRegB = BusDataIn;
 		end
 	
-		DE_REFERENCE_3: NextState = CHOOSE_OPP;
+		DEREF_3: NextState = CHOOSE_OPP;
 
         endcase
     end
