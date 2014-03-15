@@ -229,7 +229,7 @@ module CPU(
             end else begin
                 NextState        = IDLE;
                 NextProgCounter  = 8'hFF; // Nothing has happened.
-                NextInterruptAck = 2'b01;
+                NextInterruptAck = 2'b00;
             end
         end
 
