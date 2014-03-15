@@ -426,6 +426,30 @@ module CPU(
         end
 
         RETURN_0: NextState = CHOOSE_OPP;
+		
+		DE_REFERENCE_A: begin
+			NextRegSelect = 1'b0;
+			NextState = DE_REFERENCE_1;
+			NextBusAddr = CurrRegA;
+		end
+	
+		DE_REFERENCE_B: begin
+			NextRegSelect = 1'b1;
+			NextState = DE_REFERENCE_1;
+			NextBusAddr = CurrRegB;
+		end
+	
+		DE_REFERENCE_1: NextState = DE_REFERENCE_2;
+	
+		DE_REFERENCE_2: begin
+			NextState = DE_REFERENCE_3;
+			if(!CurrRegSelect)
+				NextRegA = BusDataIn;
+			else
+				NextRegB = BusDataIn;
+		end
+	
+		DE_REFERENCE_3: NextState = CHOOSE_OPP;
 
         endcase
     end
