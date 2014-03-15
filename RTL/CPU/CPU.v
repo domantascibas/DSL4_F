@@ -432,20 +432,20 @@ module CPU(
 		
 		DEREF_A: begin
 			NextRegSelect = 1'b0;
-			NextState = DE_REFERENCE_1;
+			NextState = DEREF_1;
 			NextBusAddr = CurrRegA;
 		end
 	
 		DEREF_B: begin
 			NextRegSelect = 1'b1;
-			NextState = DE_REFERENCE_1;
+			NextState = DEREF_1;
 			NextBusAddr = CurrRegB;
 		end
 	
-		DEREF_1: NextState = DE_REFERENCE_2;
+		DEREF_1: NextState = DEREF_2;
 	
 		DEREF_2: begin
-			NextState = DE_REFERENCE_3;
+			NextState = DEREF_3;
 			if(!CurrRegSelect)
 				NextRegA = BusDataIn;
 			else
