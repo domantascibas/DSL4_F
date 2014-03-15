@@ -31,7 +31,7 @@ module RAM(
     input       BUS_WE;     //  Write enable
 
     parameter RAMBaseAddr  = 0;
-    parameter RAMAddrWidth = 7; // 128 x 8-bits memory ?? hould be 8; may be doesn't fit
+    parameter RAMAddrWidth = 7; // 128 x 8-bits memory; high memory reserved for RAM mapped HW
     parameter RAMAddrMask  = 128 - 1; // Since RAMBaseAddr is 0
 
     // Components
