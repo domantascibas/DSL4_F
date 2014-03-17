@@ -404,10 +404,6 @@ module CPU(
         GOTO_ADDR_1: NextState = CHOOSE_OPP;
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        // GOTO_IDLE : here starts the IDLE operation.
-        GOTO_IDLE: NextState = IDLE;
-
-        ///////////////////////////////////////////////////////////////////////////////////////
         // FUNCTION_CALL : here starts the function call operational pipeline.
         // Save the PC of return position and move to address
         // At the start wait for 1 cycle for address to be available
