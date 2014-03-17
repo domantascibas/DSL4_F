@@ -38,6 +38,9 @@ module TopModule1(
     wire [7:0] RAM_BUS_ADDR;
     wire       RAM_BUS_WE;
 
+    wire Timer_IRQ;
+    wire Timer_IRQ_Ack;
+
     RAM ram0(.CLK(CLK),
              .BUS_DATA(RAM_BUS_DATA),
              .BUS_ADDR(RAM_BUS_ADDR),
@@ -56,8 +59,8 @@ module TopModule1(
              .BUS_WE(RAM_BUS_WE),
              .ROM_ADDRESS(ROM_ADDR),
              .ROM_DATA(ROM_DATA),
-             .BUS_INTERRUPTS_RAISE(IQR_RAISE),
-             .BUS_INTERRUPTS_ACK(IRQ_ACK)
+             .BUS_INTERRUPTS_RAISE({Timer_IRQ, IQR_RAISE[0]}),
+             .BUS_INTERRUPTS_ACK({Timer_IRQ_Ack,IRQ_ACK[0]})
              );
 
     VGA_Wrapper vga(.CLK(CLK),
@@ -67,6 +70,16 @@ module TopModule1(
                     .BUS_WE(RAM_BUS_WE)
                     // add: VGA output
                     );
+
+    Timer tim(.CLK(CLK),
+              .RST(RESET),
+              .BUS_ADDR(RAM_BUS_ADDR),
+              .BUS_DATA(RAM_BUS_DATA),
+              .BUS_WE(RAM_BUS_WE),
+              .BUS_INTERRUPT_ACK(Timer_IRQ_Ack),
+              .BUS_INTERRUPT_RAISE(Timer_IRQ)
+              );
+
 
 
 endmodule
