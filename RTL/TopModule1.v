@@ -60,5 +60,13 @@ module TopModule1(
              .BUS_INTERRUPTS_ACK(IRQ_ACK)
              );
 
+    VGA_Wrapper vga(.CLK(CLK),
+                    .RESET(RESET),
+                    .BUS_ADDR(RAM_BUS_ADDR),
+                    .BUS_DATA(RAM_BUS_DATA),
+                    .BUS_WE(RAM_BUS_WE)
+                    // add: VGA output
+                    );
+
 
 endmodule

@@ -316,6 +316,8 @@ module CPU(
             NextState       = WRITE_TO_MEM_0;
             NextRegSelect   = 1'b0;
             NextProgCounter = CurrProgCounter + 2;
+
+            NextBusDataOutWE = 1'b1;
         end
 
         ///////////////////////////////////////////////////////////////////////////////////////
@@ -429,21 +431,21 @@ module CPU(
         end
 
         RETURN_0: NextState = CHOOSE_OPP;
-		
+
 		DEREF_A: begin
 			NextRegSelect = 1'b0;
 			NextState = DEREF_1;
 			NextBusAddr = CurrRegA;
 		end
-	
+
 		DEREF_B: begin
 			NextRegSelect = 1'b1;
 			NextState = DEREF_1;
 			NextBusAddr = CurrRegB;
 		end
-	
+
 		DEREF_1: NextState = DEREF_2;
-	
+
 		DEREF_2: begin
 			NextState = DEREF_3;
 			NextProgCounter = CurrProgCounter + 1;
@@ -452,7 +454,7 @@ module CPU(
 			else
 				NextRegB = BusDataIn;
 		end
-	
+
 		DEREF_3: NextState = CHOOSE_OPP;
 
         endcase
