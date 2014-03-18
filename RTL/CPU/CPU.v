@@ -166,7 +166,12 @@ module CPU(
     DEREF_B                = 8'h51, // Indirect mem access through reg B
 	DEREF_1				   = 8'h52,	// wait for the value from RAM to arrive
 	DEREF_2				   = 8'h53, // write data from BusDataIn to the correct Reg
-	DEREF_3				   = 8'h54;	// wait for new op address to settle. end op.
+	DEREF_3				   = 8'h54,	// wait for new op address to settle. end op.
+
+	LOAD_IMM_A             = 8'h60, // Load immediate to register A
+	LOAD_IMM_B             = 8'h61, // Load immediate to register B
+	LOAD_IMM_0             = 8'h62, // Wait for value from ROM
+	LOAD_IMM_1             = 8'h63; // Wait for next instruction to settle
 
 
     // Sequential part of the State Machine.
@@ -261,6 +266,8 @@ module CPU(
             4'hA: NextState = RETURN;
             4'hB: NextState = DEREF_A;
             4'hC: NextState = DEREF_B;
+            4'hD: NextState = LOAD_IMM_A;
+            4'hE: NextState = LOAD_IMM_B;
             default:
                   NextState = CurrState;
             endcase
@@ -428,6 +435,11 @@ module CPU(
 
         RETURN_0: NextState = CHOOSE_OPP;
 
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // DEREF_A : here starts the dereference operational pipeline.
+        // immitates indirect memory access
+        // Value in reg A istreated as an address for the value
+        // Set the BUS address to contents of reigster A, store return value from ram in reg A
 		DEREF_A: begin
 			NextRegSelect = 1'b0;
 			NextState = DEREF_1;
@@ -440,8 +452,10 @@ module CPU(
 			NextBusAddr = CurrRegB;
 		end
 
+        // wait for the RAM value
 		DEREF_1: NextState = DEREF_2;
 
+        // store RAM data in the right register and increment PC
 		DEREF_2: begin
 			NextState = DEREF_3;
 			NextProgCounter = CurrProgCounter + 1;
@@ -451,7 +465,36 @@ module CPU(
 				NextRegB = BusDataIn;
 		end
 
+        // wait for next instruction
 		DEREF_3: NextState = CHOOSE_OPP;
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // LOAD_IMM_A : here starts the load immediate operational pipeline.
+        // Set next 8bit value to one of the registers
+		LOAD_IMM_A: begin
+		    NextState = LOAD_IMM_0;
+		    NextRegSelect = 1'b0;
+		end
+
+		LOAD_IMM_B: begin
+		    NextState = LOAD_IMM_0;
+		    NextRegSelect = 1'b1;
+		end
+
+		// immediate value is now ready
+		LOAD_IMM_0: begin
+			if(!CurrRegSelect)
+				NextRegA = ProgMemoryOut;
+			else
+				NextRegB = ProgMemoryOut;
+
+
+            NextState = LOAD_IMM_1;
+            NextProgCounter = CurrProgCounter + 2;
+        end
+
+        LOAD_IMM_1: NextState = CHOOSE_OPP;
+
 
         endcase
     end

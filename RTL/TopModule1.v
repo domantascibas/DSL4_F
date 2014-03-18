@@ -21,15 +21,18 @@
 module TopModule1(
     CLK,
     RESET,
-    IQR_RAISE,
-    IRQ_ACK
+
+    COLOUR_OUT,
+    HS_OUT,
+    VS_OUT
     );
 
     input CLK;
     input RESET;
 
-    input [1:0] IQR_RAISE;
-    output [1:0] IRQ_ACK;
+    output [7:0] COLOUR_OUT;
+    output       HS_OUT;
+    output       VS_OUT;
 
     wire [7:0] ROM_DATA;
     wire [7:0] ROM_ADDR;
@@ -40,6 +43,7 @@ module TopModule1(
 
     wire Timer_IRQ;
     wire Timer_IRQ_Ack;
+    wire Mouse_IRQ_Ack; // not connected, used for output bus on CPU
 
     RAM ram0(.CLK(CLK),
              .BUS_DATA(RAM_BUS_DATA),
@@ -59,19 +63,21 @@ module TopModule1(
              .BUS_WE(RAM_BUS_WE),
              .ROM_ADDRESS(ROM_ADDR),
              .ROM_DATA(ROM_DATA),
-             .BUS_INTERRUPTS_RAISE({Timer_IRQ, IQR_RAISE[0]}),
-             .BUS_INTERRUPTS_ACK({Timer_IRQ_Ack,IRQ_ACK[0]})
+             .BUS_INTERRUPTS_RAISE({Timer_IRQ, 1'b0}),
+             .BUS_INTERRUPTS_ACK({Timer_IRQ_Ack,Mouse_IRQ_Ack[0]})
              );
 
     VGA_Wrapper vga(.CLK(CLK),
                     .RESET(RESET),
                     .BUS_ADDR(RAM_BUS_ADDR),
                     .BUS_DATA(RAM_BUS_DATA),
-                    .BUS_WE(RAM_BUS_WE)
-                    // add: VGA output
+                    .BUS_WE(RAM_BUS_WE),
+                    .COLOUR_OUT(COLOUR_OUT),
+                    .HS_OUT(HS_OUT),
+                    .VS_OUT(VS_OUT)
                     );
 
-    Timer tim(.CLK(CLK),
+    Timer timer0(.CLK(CLK),
               .RST(RESET),
               .BUS_ADDR(RAM_BUS_ADDR),
               .BUS_DATA(RAM_BUS_DATA),
@@ -79,7 +85,5 @@ module TopModule1(
               .BUS_INTERRUPT_ACK(Timer_IRQ_Ack),
               .BUS_INTERRUPT_RAISE(Timer_IRQ)
               );
-
-
 
 endmodule
