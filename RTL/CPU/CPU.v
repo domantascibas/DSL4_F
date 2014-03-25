@@ -155,7 +155,6 @@ module CPU(
     GOTO_ADDR              = 8'h43, // goto address
     GOTO_ADDR_0            = 8'h44, // wait for address is available
     GOTO_ADDR_1            = 8'h45, // wait for new op address to settle. end op.
-    GOTO_IDLE              = 8'h46, // goto Idle state and wait for IRQ
     FUNCTION_CALL          = 8'h47, // function call at address; save next PC
     FUNCTION_CALL_0        = 8'h48, // wait for address is available
     FUNCTION_CALL_1        = 8'h49, // wait for new op address to settle. end op.
