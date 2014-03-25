@@ -32,8 +32,8 @@ module IRTransmitterSM(
     input [3:0] COMMAND,
     input SEND_PACKET,
 	 //Infrared LED Signal
-    output IR_LED,
-	 output [2:0] STATE		//Used only for debugging in simulations
+    output IR_LED
+//	 output [2:0] STATE		//Used only for debugging in simulations
     );
 	 
 	 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -389,6 +389,6 @@ module IRTransmitterSM(
 	   
 		//Assign output IR_LED to the register led_out that had been used during the State Machine.
 		assign IR_LED	= led_out;
-		assign STATE	= CurrState;
+//		assign STATE	= CurrState;
 	  
 endmodule

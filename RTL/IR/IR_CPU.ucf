@@ -1,0 +1,10 @@
+//Inputs
+NET "CLK"					LOC = B8		;
+NET "RST"					LOC = P11	;
+NET "COLOUR_SEL<0>"		LOC = B4		;
+NET "COLOUR_SEL<1>"		LOC = F3		;
+NET "COLOUR_SEL<2>"		LOC = E2		;
+NET "COLOUR_SEL<3>"		LOC = N3		;
+
+//Outputs	
+NET "IR_LED"				LOC = B5		;

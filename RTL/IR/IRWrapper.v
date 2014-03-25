@@ -30,7 +30,7 @@ module IRWrapper(
 	 //Bus Interface Inputs
 	 input [7:0] ADDR_IN,
 	 input BUS_WE,
-    input [3:0] COMMAND,
+    input [7:0] DATA_IN,
 	 input [3:0] COLOUR_SEL,
     //IR Output
 	 output IR_LED
@@ -45,15 +45,18 @@ module IRWrapper(
 	wire green;
 	wire blue;
 	wire red;
-	reg reset;
+	reg [3:0] command;	//Used to control the movment of the car. The car will only move (follow the DATA_IN)
+								//when the address bus is set to the base address of the IR Transmitter.
 	
-	//Condition that ensures the module is only operating when the address bus is set to the base address
-	//of the IR Transmitter module (0x90).
-	always @ (posedge CLK) begin	
-		if (((ADDR_IN != BaseAddrIR) & BUS_WE) || (RST == 1'b1))
-			reset <= 1'b1;
+	//Condition that ensures the module is only operating when the address bus is set to the base address of the IR
+	//Transmitter module (0x90).
+	always @ (posedge CLK) begin
+		if (RST)
+			command <= 4'b0000;
+		else if ((ADDR_IN == BaseAddrIR) & BUS_WE)
+			command <= DATA_IN [3:0];
 		else
-			reset <= 1'b0;
+			command <= command;
 		end
 	
 	//Instantiate the IRTransmitter State Machine module for each of the 4 coloured cars: YELLOW,RED,BLUE and GREEN.
@@ -65,8 +68,8 @@ module IRWrapper(
 											.ClockRatio(1250)
 											)
 							YELLOW	(	.CLK(CLK),
-											.RST(reset),
-											.COMMAND(COMMAND),
+											.RST(RST),
+											.COMMAND(command),
 											.SEND_PACKET(send_packet_out),
 											.IR_LED(yellow)
 											);
@@ -78,8 +81,8 @@ module IRWrapper(
 											.ClockRatio(1389)
 											)
 							BLUE		(	.CLK(CLK),
-											.RST(reset),
-											.COMMAND(COMMAND),
+											.RST(RST),
+											.COMMAND(command),
 											.SEND_PACKET(send_packet_out),
 											.IR_LED(blue)
 											);
@@ -91,8 +94,8 @@ module IRWrapper(
 											.ClockRatio(1389)
 											)
 							RED		(	.CLK(CLK),
-											.RST(reset),
-											.COMMAND(COMMAND),
+											.RST(RST),
+											.COMMAND(command),
 											.SEND_PACKET(send_packet_out),
 											.IR_LED(red)
 											);
@@ -104,15 +107,15 @@ module IRWrapper(
 											.ClockRatio(1334)
 											)
 							GREEN		(	.CLK(CLK),
-											.RST(reset),
-											.COMMAND(COMMAND),
+											.RST(RST),
+											.COMMAND(command),
 											.SEND_PACKET(send_packet_out),
 											.IR_LED(green)
 											);
 									
 	//Instantiate the SendPacketCounter module, used to send a 10Hz trigger to each of the state machines.
 	SendPacketCounter	SP0		(	.CLK(CLK),
-											.RST(reset),
+											.RST(RST),
 											.SEND_PACKET_OUT(send_packet_out)
 											);
 											
