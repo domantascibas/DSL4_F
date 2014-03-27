@@ -146,9 +146,9 @@ module CPU(
     DO_MATHS_OPP_SAVE_IN_B = 8'h31, // The result of maths op. is available, save it to Reg B
     DO_MATHS_OPP_0         = 8'h32, // wait for new op address to settle. end op.
 
-//    IF_A_EQ_B_GOTO_ADDR    = 8'h40, // Branch to address if reg A == reg B
-//    IF_A_GREAT_B_GOTO_ADDR = 8'h41, // Branch to address if reg A > reg B
-//    IF_A_LESS_B_GOTO_ADDR  = 8'h42, // Branch to address if reg A < reg B
+    //IF_A_EQ_B_GOTO_ADDR    = 8'h40, // Branch to address if reg A == reg B
+    //IF_A_GREAT_B_GOTO_ADDR = 8'h41, // Branch to address if reg A > reg B
+    //IF_A_LESS_B_GOTO_ADDR  = 8'h42, // Branch to address if reg A < reg B
     BRANCH_OPP             = 8'h40, // Opcode for all branch operations is the same, type resolved in ALU
     BRANCH_STAGE_0         = 8'h41, // Take the branch put the address to PC
     BRANCH_STAGE_1         = 8'h42, // wait for new op address to settle. end op.
@@ -260,7 +260,7 @@ module CPU(
             4'h5: NextState = DO_MATHS_OPP_SAVE_IN_B;
             4'h6: NextState = BRANCH_OPP;
             4'h7: NextState = GOTO_ADDR;
-            4'h8: NextState = GOTO_IDLE;
+            4'h8: NextState = IDLE;
             4'h9: NextState = FUNCTION_CALL;
             4'hA: NextState = RETURN;
             4'hB: NextState = DEREF_A;
