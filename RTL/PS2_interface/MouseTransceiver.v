@@ -13,6 +13,10 @@
 //	Other three modules are: MouseTransmitter, MouseReceiver and MouseMasterSM.
 //
 // Dependencies: 
+//					MouseTransmitter.v,
+//					MouseReceiver.v,
+//					MouseMasterSM.v
+//					(also the icon and ila files if ChipScope has to be used)
 //
 // Revision: 
 // Revision 0.01 - File Created
@@ -23,16 +27,19 @@ module MouseTransceiver(
 	//Standard Inputs
 	input CLK,
 	input RESET,
-	//IO - Mouse side
-	inout CLK_MOUSE,
-	inout DATA_MOUSE,
-
+	
 	// Mouse data information
-	output reg [7:0] MouseStatus,
-	output reg signed [7:0] MouseX,
-	output reg signed [7:0] MouseY
-	//output [7:0] LED
-);
+	inout				[7:0]			BUS_DATA,
+	input				[7:0]			BUS_ADDR,
+	input								BUS_WE,
+	output	reg					BUS_INTERRUPT_RAISE,
+	input								BUS_INTERRUPT_ACK,
+	//IO - Mouse side
+	inout								CLK_MOUSE,	
+	inout								DATA_MOUSE
+    );
+
+	parameter [7:0] 	MouseBaseAddr 	= 8'hA0;
 
 	// X, Y Limits of Mouse Position e.g. VGA Screen with 160 x 120 resolution
 	parameter [7:0] MouseLimitX = 160;
@@ -43,6 +50,7 @@ module MouseTransceiver(
 //Clk
 reg ClkMouseIn;
 wire ClkMouseOutEnTrans;
+
 //Data
 wire DataMouseIn;
 wire DataMouseOutTrans;
@@ -50,8 +58,10 @@ wire DataMouseOutEnTrans;
 
 //Clk Output - can be driven by host or device
 assign CLK_MOUSE = ClkMouseOutEnTrans ? 1'b0 : 1'bz;
+
 //Clk Input
 assign DataMouseIn = DATA_MOUSE;
+
 //Clk Output - can be driven by host or device
 assign DATA_MOUSE = DataMouseOutEnTrans ? DataMouseOutTrans : 1'bz;
 
@@ -129,7 +139,10 @@ wire [7:0] MouseStatusRaw;
 wire [7:0] MouseDxRaw;
 wire [7:0] MouseDyRaw;
 wire SendInterrupt;
-wire Master_State_code;
+wire [3:0] Master_State_code;
+wire [4:0] STATE;
+
+assign STATE = {1'b0, Master_State_code};
 
 MouseMasterSM MSM(
 	//Standard Inputs
@@ -152,27 +165,32 @@ MouseMasterSM MSM(
 	.CURRENT_STATE(Master_State_code)
 );
 
+/*
+//Instantiate Softcore for ChipScope
+
 wire [35:0] control_bus;
 
 icon i_icon(
 	.CONTROL0(control_bus)
 );
 
-
 ila i_ila(
 	.CONTROL(control_bus),
 	.CLK(CLK_MOUSE),
 	.TRIG0(DATA_MOUSE),
 	.TRIG1(RESET),
-	.TRIG2(Master_State_code),
+	.TRIG2(STATE),
 	.TRIG3(ByteToSendToMouse),
 	.TRIG4(ByteRead)
 );
+*/
 
 //Pre-processing - handling of overflow and signs.
 //More importantly, this keeps tabs on the actual X/Y
 //location of the mouse.
-
+reg [7:0] MouseStatus;
+reg signed [7:0] MouseX;
+reg signed [7:0] MouseY;
 wire signed [8:0] MouseDx;
 wire signed [8:0] MouseDy;
 wire signed [8:0] MouseNewX;
@@ -184,15 +202,15 @@ assign MouseDy = (MouseStatusRaw[7]) ? (MouseStatusRaw[5] ? {MouseStatusRaw[5],8
 
 // calculate new mouse position
 assign MouseNewX = {1'b0,MouseX} + MouseDx;
-assign MouseNewY = {1'b0,MouseY} + MouseDy;
+assign MouseNewY = {1'b0,MouseY} + MouseDy; //change to '-' if (0;0) at the top.
 
 always@(posedge CLK) begin
 	if(RESET) begin
+		//Set mouse position to the middle of the screen upon RESET
 		MouseStatus <= 0;
 		MouseX <= MouseLimitX/2;
 		MouseY <= MouseLimitY/2;
 	end else if (SendInterrupt) begin
-		//Status is stripped of all unnecessary info
 		MouseStatus <= MouseStatusRaw[7:0];
 		//X is modified based on DX with limits on max and min
 		if(MouseNewX < 0)
@@ -210,5 +228,43 @@ always@(posedge CLK) begin
 			MouseY <= MouseNewY[7:0];
 	end
 end
+
+//Tristate bus read controler
+	reg TransmitStatus;
+	reg TransmitDx;
+	reg TransmitDy;
+	
+	//If the mouse peripheral is targeted, and WriteEnable is low
+	//then, we can transmit data from MOUSE to the BUS_DATA line
+	always@(posedge CLK) begin
+		if((BUS_ADDR == MouseBaseAddr) & ~BUS_WE) 
+			TransmitStatus	<= 1'b1;
+		else
+			TransmitStatus	<= 1'b0;
+			
+		if((BUS_ADDR == MouseBaseAddr + 1) & ~BUS_WE) 
+			TransmitDx	<= 1'b1;
+		else
+			TransmitDx	<= 1'b0;
+
+		if((BUS_ADDR == MouseBaseAddr + 2) & ~BUS_WE) 
+			TransmitDy	<= 1'b1;
+		else
+			TransmitDy	<= 1'b0;
+	end
+	
+	assign BUS_DATA 	= (TransmitStatus) 	? {4'b0000, MouseStatus} 	: 8'hZZ;	
+	assign BUS_DATA 	= (TransmitDx) 		? MouseX[7:0]					: 8'hZZ;	
+	assign BUS_DATA 	= (TransmitDy) 		? MouseY[7:0]					: 8'hZZ;	
+	
+	//Interrupt Handling
+	always@(posedge CLK) begin
+		if(RESET)
+			BUS_INTERRUPT_RAISE <= 1'b0;
+		else if(SendInterrupt)
+			BUS_INTERRUPT_RAISE <= 1'b1;
+		else if(BUS_INTERRUPT_ACK)
+			BUS_INTERRUPT_RAISE <= 1'b0;
+	end	
 
 endmodule

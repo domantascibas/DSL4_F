@@ -9,8 +9,8 @@
 // Project Name: PS2 Mouse Interface
 // Target Devices: Basys 2 
 // Tool versions: 
-// Description: This is the mouse receiver module. It is responsible for getting
-// data from the mouse.
+// Description: This is the mouse receiver module. It is responsible for receiving
+// data from the mouse. 
 //
 // Dependencies: 
 //

@@ -37,7 +37,7 @@ module MouseMasterSM(
 	output [7:0] MOUSE_DY,
 	output [7:0] MOUSE_STATUS,
 	output SEND_INTERRUPT,
-	output [4:0] CURRENT_STATE
+	output [3:0] CURRENT_STATE
 );
 
 //////////////////////////////////////////////////////////////

@@ -9,7 +9,8 @@
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
-// Description: 
+// Description: Mouse Interface module used for the first Lab Submission.
+// The mouse sends position data straight to the 7Seg display ant the LEDs.
 //
 // Dependencies: 
 //
