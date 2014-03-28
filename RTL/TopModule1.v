@@ -1,17 +1,21 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company:
-// Engineer:
+// Engineer:       Pavel Abrosimov
 //
 // Create Date:    14:12:25 03/15/2014
 // Design Name:
-// Module Name:    TopModule
+// Module Name:    TopModule1
 // Project Name:
 // Target Devices:
-// Tool versions:
-// Description:
+// Tool versions:  Xilinx ISE 12.4 Linux 32bit (Fedora 20)
+// Description:    Top module for VGA and CPU implementation
+//          Feature CPU, Timer and VGA blocks
+//          Instruction in CPU modify colour register in VGA_Wrapper module
+//          once a second via an interrupt from the Timer
 //
-// Dependencies:
+// Dependencies:   input clock CLK of 50MHz
+//          Modules: RAM, ROM, CPU, Timer and VGA_Wrapper
 //
 // Revision:
 // Revision 0.01 - File Created
@@ -64,7 +68,7 @@ module TopModule1(
              .ROM_ADDRESS(ROM_ADDR),
              .ROM_DATA(ROM_DATA),
              .BUS_INTERRUPTS_RAISE({Timer_IRQ, 1'b0}),
-             .BUS_INTERRUPTS_ACK({Timer_IRQ_Ack,Mouse_IRQ_Ack[0]})
+             .BUS_INTERRUPTS_ACK({Timer_IRQ_Ack,Mouse_IRQ_Ack})
              );
 
     VGA_Wrapper vga(.CLK(CLK),
