@@ -1,0 +1,55 @@
+///////////////////////////////////////////////
+//Clock and Reset buttons
+//
+NET "CLK" LOC = B8;
+NET "RESET" LOC = G12;
+
+///////////////////////////////////////////////
+//IR controller
+//
+//Inputs
+NET "SWITCHES<0>" LOC = P11;
+NET "SWITCHES<1>" LOC = L3;
+NET "SWITCHES<2>" LOC = K3;
+NET "SWITCHES<3>" LOC = B4;
+NET "SWITCHES<4>" LOC = G3;
+NET "SWITCHES<5>" LOC = F3;
+NET "SWITCHES<6>" LOC = E2;
+NET "SWITCHES<7>" LOC = N3;
+
+//Outputs	
+NET "IR_LED" LOC = B5;
+
+///////////////////////////////////////////////
+//Mouse Interface
+//
+NET "CLK_MOUSE" LOC = B1;
+NET "DATA_MOUSE" LOC = C3;
+
+//Clock error fix
+NET "CLK_MOUSE" CLOCK_DEDICATED_ROUTE = FALSE;
+
+//7Seg outputs
+NET "DEC_OUT[7]" LOC = N13;
+NET "DEC_OUT[6]" LOC = M12;
+NET "DEC_OUT[5]" LOC = L13;
+NET "DEC_OUT[4]" LOC = P12;
+NET "DEC_OUT[3]" LOC = N11;
+NET "DEC_OUT[2]" LOC = N14;
+NET "DEC_OUT[1]" LOC = H12;
+NET "DEC_OUT[0]" LOC = L14;
+NET "SEG_SELECT[3]" LOC = F12;
+NET "SEG_SELECT[2]" LOC = J12;
+NET "SEG_SELECT[1]" LOC = M13;
+NET "SEG_SELECT[0]" LOC = K14;
+
+//Status LED outputs
+NET "StatusLED[7]" LOC = M5;
+NET "StatusLED[6]" LOC = M11;
+NET "StatusLED[5]" LOC = P7;
+NET "StatusLED[4]" LOC = P6;
+NET "StatusLED[3]" LOC = N5;
+NET "StatusLED[2]" LOC = N4;
+NET "StatusLED[1]" LOC = P4;
+NET "StatusLED[0]" LOC = G1;
+
