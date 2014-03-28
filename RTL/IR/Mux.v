@@ -32,10 +32,13 @@ module Mux(
 	output IR_LED
     );
 	
+	///////////////////////////////////////////////////////////////////////////////
 	//Define register for use in always@ statement
 	reg led;
 	
-	//Depending on the value of COLOUR_SEL, pass the desired car output to register "led"
+	///////////////////////////////////////////////////////////////////////////////
+	//Depending on the value of COLOUR_SEL, pass the desired car output to register
+	//"led"
 	always @* begin
 		case (COLOUR_SEL)
 			4'b0001	:	led <= yellow_car;
@@ -46,7 +49,7 @@ module Mux(
 			endcase
 		end
 
-
+	///////////////////////////////////////////////////////////////////////////////
 	//Assign register "led" to output IR_LED
 	assign IR_LED = led;
 

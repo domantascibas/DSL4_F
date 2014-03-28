@@ -60,7 +60,6 @@ module TopLevelDesign(
 								.ADDR_IN(addr_bus),
 								.BUS_WE(bus_we),
 								.DATA_IN(data_bus),
-//								.COLOUR_SEL(COLOUR_SEL),
 								.IR_LED(IR_LED)
 								);
 	
@@ -99,10 +98,10 @@ module TopLevelDesign(
 								.BUS_INTERRUPTS_ACK(interrupt_ack)
 								);
 								
+	//Instantiate Switch Module
 	Switches		SW0	(	.CLK(CLK),
 								.RST(RST),
 								.BUS_ADDR(addr_bus),
-								.BUS_WE(bus_we),
 								.SWITCH_VALUE(SWITCHES),
 								.BUS_DATA(data_bus)
 								);

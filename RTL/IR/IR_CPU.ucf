@@ -1,10 +1,14 @@
 //Inputs
-NET "CLK"					LOC = B8		;
-NET "RST"					LOC = P11	;
-NET "COLOUR_SEL<0>"		LOC = B4		;
-NET "COLOUR_SEL<1>"		LOC = F3		;
-NET "COLOUR_SEL<2>"		LOC = E2		;
-NET "COLOUR_SEL<3>"		LOC = N3		;
+NET "CLK"				LOC = B8		;
+NET "RST"				LOC = G12	;
+NET "SWITCHES<0>"		LOC = P11	;
+NET "SWITCHES<1>"		LOC = L3		;
+NET "SWITCHES<2>"		LOC = K3		;
+NET "SWITCHES<3>"		LOC = B4		;
+NET "SWITCHES<4>"		LOC = G3		;
+NET "SWITCHES<5>"		LOC = F3		;
+NET "SWITCHES<6>"		LOC = E2		;
+NET "SWITCHES<7>"		LOC = N3		;
 
 //Outputs	
-NET "IR_LED"				LOC = B5		;
+NET "IR_LED"			LOC = B5		;

@@ -31,13 +31,13 @@ module IRWrapper(
 	 input [7:0] ADDR_IN,
 	 input BUS_WE,
     input [7:0] DATA_IN,
-	 input [3:0] COLOUR_SEL,
     //IR Output
 	 output IR_LED
     );
 	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Define local parameter for the base address of the IR Transmitter module
-	localparam BaseAddrIR = 8'h90;
+	localparam BaseAddrIR 		= 8'h90;
 	
 	//Define wires to be used for signal communication between instantiated modules.
 	wire send_packet_out;
@@ -45,18 +45,30 @@ module IRWrapper(
 	wire green;
 	wire blue;
 	wire red;
-	reg [3:0] command;	//Used to control the movment of the car. The car will only move (follow the DATA_IN)
-								//when the address bus is set to the base address of the IR Transmitter.
+	
+	reg [3:0] command;		//Used to control the movment of the car. The car will only move (follow the DATA_IN)
+									//when the address bus is set to the base address of the IR Transmitter.
+	reg [3:0] car_colour;	//Used to select which state machine is to be used, depending on the colour of the car chosen.
 	
 	//Condition that ensures the module is only operating when the address bus is set to the base address of the IR
 	//Transmitter module (0x90).
 	always @ (posedge CLK) begin
-		if (RST)
+		if (RST) begin
 			command <= 4'b0000;
-		else if ((ADDR_IN == BaseAddrIR) & BUS_WE)
+			car_colour <= 4'b0000;
+			end
+		else if ((ADDR_IN == BaseAddrIR) & BUS_WE) begin
 			command <= DATA_IN [3:0];
-		else
+			car_colour <= car_colour;
+			end
+		else if ((ADDR_IN == BaseAddrIR + 8'h01) & BUS_WE) begin
 			command <= command;
+			car_colour <= DATA_IN [3:0];
+			end			
+		else begin
+			command <= command;
+			car_colour <= car_colour;
+			end
 		end
 	
 	//Instantiate the IRTransmitter State Machine module for each of the 4 coloured cars: YELLOW,RED,BLUE and GREEN.
@@ -120,7 +132,7 @@ module IRWrapper(
 											);
 											
 	//Instantiate the multiplexer module for selecting the appropriate car colour.
-	Mux					Mux0		(	.COLOUR_SEL(COLOUR_SEL),
+	Mux					Mux0		(	.COLOUR_SEL(car_colour),
 											.yellow_car(yellow),
 											.green_car(green),
 											.blue_car(blue),
