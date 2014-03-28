@@ -36,6 +36,10 @@ module Seg7Wrapper(
 //Define the BUS_ADDR for the 7Seg peripheral
 parameter [7:0] Seg7BaseAddr = 8'hD0;
 
+//Internal registers to hold position data
+reg [7:0] Xpos;
+reg [7:0] Ypos;
+
 //Add extra wires to interconnect all the modules
 wire [1:0] StrobeCount;
 wire [4:0] MuxOut;
@@ -46,10 +50,6 @@ wire [4:0] Pos2 = {1'b0,Ypos[7:4]};
 wire [4:0] Pos3 = {1'b0,Ypos[3:0]};
 
 wire Bit16TrigOut;
-
-//Internal registers to hold position data
-reg [7:0] Xpos;
-reg [7:0] Ypos;
 
 //Instantiate the 7Seg decoder
 Seg7Decoder Seg7(
@@ -89,7 +89,7 @@ Bit16(
 	.CLK(CLK), 
 	.RESET(RESET), 
 	.ENABLE_IN(1'b1), 
-	.TRIG_OUT(Bit16TrigOut)
+	.TRIGG_OUT(Bit16TrigOut)
 );
 
 //Tristate bus read controler
