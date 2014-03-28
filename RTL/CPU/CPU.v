@@ -146,31 +146,31 @@ module CPU(
     DO_MATHS_OPP_SAVE_IN_B = 8'h31, // The result of maths op. is available, save it to Reg B
     DO_MATHS_OPP_0         = 8'h32, // wait for new op address to settle. end op.
 
-    //IF_A_EQ_B_GOTO_ADDR    = 8'h40, // Branch to address if reg A == reg B
-    //IF_A_GREAT_B_GOTO_ADDR = 8'h41, // Branch to address if reg A > reg B
-    //IF_A_LESS_B_GOTO_ADDR  = 8'h42, // Branch to address if reg A < reg B
     BRANCH_OPP             = 8'h40, // Opcode for all branch operations is the same, type resolved in ALU
     BRANCH_STAGE_0         = 8'h41, // Take the branch put the address to PC
     BRANCH_STAGE_1         = 8'h42, // wait for new op address to settle. end op.
+	 
     GOTO_ADDR              = 8'h43, // goto address
     GOTO_ADDR_0            = 8'h44, // wait for address is available
     GOTO_ADDR_1            = 8'h45, // wait for new op address to settle. end op.
+	 
     FUNCTION_CALL          = 8'h47, // function call at address; save next PC
     FUNCTION_CALL_0        = 8'h48, // wait for address is available
     FUNCTION_CALL_1        = 8'h49, // wait for new op address to settle. end op.
+	 
     RETURN                 = 8'h4A, // return from function; load PC from context
     RETURN_0               = 8'h4B, // wait for new op address to settle. end op.
 
     DEREF_A                = 8'h50, // Indirect mem access through reg A
     DEREF_B                = 8'h51, // Indirect mem access through reg B
-	DEREF_1				   = 8'h52,	// wait for the value from RAM to arrive
-	DEREF_2				   = 8'h53, // write data from BusDataIn to the correct Reg
-	DEREF_3				   = 8'h54,	// wait for new op address to settle. end op.
+	 DEREF_1				 	   = 8'h52,	// wait for the value from RAM to arrive
+	 DEREF_2				   	= 8'h53, // write data from BusDataIn to the correct Reg
+	 DEREF_3				   	= 8'h54,	// wait for new op address to settle. end op.
 
-	LOAD_IMM_A             = 8'h60, // Load immediate to register A
-	LOAD_IMM_B             = 8'h61, // Load immediate to register B
-	LOAD_IMM_0             = 8'h62, // Wait for value from ROM
-	LOAD_IMM_1             = 8'h63; // Wait for next instruction to settle
+	 LOAD_IMM_A             = 8'h60, // Load immediate to register A
+	 LOAD_IMM_B             = 8'h61, // Load immediate to register B
+	 LOAD_IMM_0             = 8'h62, // Wait for value from ROM
+	 LOAD_IMM_1             = 8'h63; // Wait for next instruction to settle
 
 
     // Sequential part of the State Machine.

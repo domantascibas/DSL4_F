@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company: 	
+// Engineer: 	Calum Hunter
 // 
 // Create Date:    10:34:56 03/25/2014 
 // Design Name: 
@@ -23,27 +23,26 @@ module Switches(
     input RST,
     input [7:0] BUS_ADDR,
 	 input [7:0] SWITCH_VALUE,
-	 input BUS_WE,
     output [7:0] BUS_DATA
     );
 	
 	///////////////////////////////////////////////////////////////////////////////
 	//Define parameters to be used in this module.
-	parameter	[7:0]	SwitchBaseAddr	=	8'hD2;
+	parameter	[7:0]	SwitchBaseAddr	=	8'h80;
 	
 	///////////////////////////////////////////////////////////////////////////////
 	//Define internal register for switch control.
-	reg [7:0] bus_data;
+	reg [7:0] data_bus;
 	
 	///////////////////////////////////////////////////////////////////////////////
 	//Test for correct base address in address bus and that write enable is set.
 	//If so, pass the value of the switches into the data bus.
 	always @ (posedge CLK) begin
 		if (RST)
-			bus_data <= 0;
+			data_bus <= 0;
 		else begin
-			if ((BUS_ADDR == SwitchBaseAddr) & BUS_WE)
-				bus_data <= SWITCH_VALUE;
+			if (BUS_ADDR == SwitchBaseAddr)
+				data_bus <= SWITCH_VALUE;
 			end
 		end
 		
@@ -55,7 +54,7 @@ module Switches(
 		if (RST)
 			switch_we <= 0;
 		else begin
-			if ((BUS_ADDR == SwitchBaseAddr) & BUS_WE)
+			if (BUS_ADDR == SwitchBaseAddr)
 				switch_we <= 1;
 			else
 				switch_we <= 0;
@@ -64,6 +63,6 @@ module Switches(
 	
 	///////////////////////////////////////////////////////////////////////////////
 	//Assign register to data bus output.
-	assign BUS_DATA = (switch_we) ? bus_data:8'hZZ;
+	assign BUS_DATA = (switch_we) ? data_bus:8'hZZ;
 	
 endmodule

@@ -55,6 +55,7 @@ module Timer(
 
 	reg [7:0] buff_bus_data;
 	reg [7:0] Out;
+	reg [31:0] timer;
 
 	reg state_counter;
 	parameter idle_state = 0;
@@ -122,9 +123,6 @@ module Timer(
 
 	//Now we can record the last time an interrupt was sent, and add a value to it to determine if is time to raise
 	//the interrupt.
-
-	//But first, let's generate the 1ms timer
-	reg [31:0] timer;
 
 	always @ (posedge CLK) begin
 		if (RST | (BUS_ADDR == TimerBaseAddr + 8'h02))
