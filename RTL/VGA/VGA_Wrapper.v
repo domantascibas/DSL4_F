@@ -59,8 +59,8 @@ module VGA_Wrapper(
     reg [7:0] Colours [1:0]; // two 8bit registers to hold colours
 
     reg [14:0] FB_ADDR_REG;
-    reg        FB_DATA_IN;
-    wire       FB_DATA_OUT;
+    reg  [7:0] FB_DATA_IN;
+    wire [7:0] FB_DATA_OUT;
     reg        FB_WE;
 
 
@@ -124,7 +124,7 @@ module VGA_Wrapper(
             Out <= FB_ADDR_REG[7:0];
 
             if(BUS_WE) begin
-                FB_ADDR_REG[7:0] <= BufferedBusData;
+                FB_ADDR_REG[7:0] <= BufferedBusData;//{BufferedBusData[7:3], 3'b000}; // low 3 bits MUST be 0 for byte addressing
                 RAMBusWE <= 1'b0;
             end else
                 RAMBusWE <= 1'b1; // place value to the bus
@@ -132,7 +132,7 @@ module VGA_Wrapper(
             Out <= FB_DATA_OUT;
 
             if(BUS_WE) begin
-                FB_DATA_IN <= BufferedBusData & 1; // LSB is the actual data
+                FB_DATA_IN <= BufferedBusData;
                 RAMBusWE <= 1'b0;
             end else
                 RAMBusWE <= 1'b1; // place value to the bus
