@@ -111,7 +111,7 @@ module Frame_Buffer(
         B_DATA_OUT <= Mem[B_ADDR[14:3]][B_ADDR[2:0]];
 
     initial begin
-        $readmemb("mem.data",Mem);
+        $readmemh("mem.data",Mem);
     end
 
 endmodule

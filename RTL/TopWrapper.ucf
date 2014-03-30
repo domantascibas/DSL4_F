@@ -1,7 +1,8 @@
 ///////////////////////////////////////////////
 //Clock and Reset buttons
 //
-NET "CLK" LOC = B8;
+// NET "CLK" LOC = B8; // internal
+NET "CLK" LOC = M6; // crystal
 NET "RESET" LOC = G12;
 
 ///////////////////////////////////////////////
@@ -17,7 +18,7 @@ NET "SWITCHES<5>" LOC = F3;
 NET "SWITCHES<6>" LOC = E2;
 NET "SWITCHES<7>" LOC = N3;
 
-//Outputs	
+//Outputs
 NET "IR_LED" LOC = B5;
 
 ///////////////////////////////////////////////

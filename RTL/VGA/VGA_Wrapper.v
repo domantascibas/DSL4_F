@@ -90,7 +90,7 @@ module VGA_Wrapper(
 
     VGA_Sig_Gen sigGen(.CLK(CLK),
                        .RESET(RESET),
-                       .CONFIG_COLOURS({Colours[0], Colours[1]}),
+                       .CONFIG_COLOURS({Colours[1], Colours[0]}),
                        .VGA_HS(HS_OUT),
                        .VGA_VS(VS_OUT),
                        .VGA_COLOUR(COLOUR_OUT),

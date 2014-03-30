@@ -149,15 +149,15 @@ module CPU(
     BRANCH_OPP             = 8'h40, // Opcode for all branch operations is the same, type resolved in ALU
     BRANCH_STAGE_0         = 8'h41, // Take the branch put the address to PC
     BRANCH_STAGE_1         = 8'h42, // wait for new op address to settle. end op.
-	 
+
     GOTO_ADDR              = 8'h43, // goto address
     GOTO_ADDR_0            = 8'h44, // wait for address is available
     GOTO_ADDR_1            = 8'h45, // wait for new op address to settle. end op.
-	 
+
     FUNCTION_CALL          = 8'h47, // function call at address; save next PC
     FUNCTION_CALL_0        = 8'h48, // wait for address is available
     FUNCTION_CALL_1        = 8'h49, // wait for new op address to settle. end op.
-	 
+
     RETURN                 = 8'h4A, // return from function; load PC from context
     RETURN_0               = 8'h4B, // wait for new op address to settle. end op.
 
@@ -389,7 +389,8 @@ module CPU(
                 NextState       = BRANCH_STAGE_1;
             end else begin
                 NextProgCounter = CurrProgCounter + 1; // move along the program
-                NextState       = CHOOSE_OPP;          // decide what is next instruction
+                //NextState       = CHOOSE_OPP;          // decide what is next instruction
+                NextState       = BRANCH_STAGE_1;
             end
         end
 
@@ -398,7 +399,10 @@ module CPU(
         ///////////////////////////////////////////////////////////////////////////////////////
         // GOTO_ADDR : here starts the GOTO address operational pipeline.
         // Assign new address to PC and move along the program
-        GOTO_ADDR: NextState = GOTO_ADDR_0;
+        GOTO_ADDR:begin
+            NextState = GOTO_ADDR_0;
+            NextProgCounter = CurrProgCounter + 2;
+        end
 
         // address is now available
         GOTO_ADDR_0:begin
@@ -473,11 +477,15 @@ module CPU(
 		LOAD_IMM_A: begin
 		    NextState = LOAD_IMM_0;
 		    NextRegSelect = 1'b0;
+
+		    NextProgCounter = CurrProgCounter + 2;
 		end
 
 		LOAD_IMM_B: begin
 		    NextState = LOAD_IMM_0;
 		    NextRegSelect = 1'b1;
+
+		    NextProgCounter = CurrProgCounter + 2;
 		end
 
 		// immediate value is now ready
@@ -489,7 +497,7 @@ module CPU(
 
 
             NextState = LOAD_IMM_1;
-            NextProgCounter = CurrProgCounter + 2;
+            //NextProgCounter = CurrProgCounter + 2;
         end
 
         LOAD_IMM_1: NextState = CHOOSE_OPP;
