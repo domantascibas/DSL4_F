@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////
 //Clock and Reset buttons
 //
-NET "CLK" LOC = B8; // internal
-//NET "CLK" LOC = M6; // crystal
+//NET "CLK" LOC = B8; // internal
+NET "CLK" LOC = M6; // crystal
 NET "RESET" LOC = G12;
 
 ///////////////////////////////////////////////
@@ -58,15 +58,15 @@ NET "StatusLED[0]" LOC = G1;
 ///////////////////////////////////////////////
 //VGA interface
 //
-//NET "COLOUR_OUT[0]" LOC = H13;
-//NET "COLOUR_OUT[1]" LOC = J13;
-//NET "COLOUR_OUT[2]" LOC = F14;
-//NET "COLOUR_OUT[3]" LOC = G13;
-//NET "COLOUR_OUT[4]" LOC = G14;
-//NET "COLOUR_OUT[5]" LOC = C14;
-//NET "COLOUR_OUT[6]" LOC = D13;
-//NET "COLOUR_OUT[7]" LOC = F13;
+NET "COLOUR_OUT[0]" LOC = H13;
+NET "COLOUR_OUT[1]" LOC = J13;
+NET "COLOUR_OUT[2]" LOC = F14;
+NET "COLOUR_OUT[3]" LOC = G13;
+NET "COLOUR_OUT[4]" LOC = G14;
+NET "COLOUR_OUT[5]" LOC = C14;
+NET "COLOUR_OUT[6]" LOC = D13;
+NET "COLOUR_OUT[7]" LOC = F13;
 
 //Horizontal & vertical sync signals
-//NET "HS_OUT" LOC = J14;
-//NET "VS_OUT" LOC = K13;
+NET "HS_OUT" LOC = J14;
+NET "VS_OUT" LOC = K13;
