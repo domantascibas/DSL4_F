@@ -73,6 +73,19 @@ module VGA_Wrapper(
     parameter LOW_ADDR_FB_REG_ADDR  = 8'hB3;
     parameter FB_DATA_REG_ADDR      = 8'hB4;
 
+    fb_mem_coregen FB(.clka(CLK),
+                      .wea(FB_WE),
+                      .addra(FB_ADDR_REG[14:3]),
+                      .dina(FB_DATA_IN),
+                      .douta(FB_DATA_OUT),
+
+                      .clkb(FB_B_CLK),
+                      .web(1'b0),
+                      .addrb(FB_B_ADDR),
+                      .dinb(1'b0),
+                      .doutb(FB_B_DATA)
+                      );
+/*
     Frame_Buffer fb(.RESET(RESET),
                     // No using this port A this time
                     .A_CLK(CLK),
@@ -87,7 +100,7 @@ module VGA_Wrapper(
                     .B_DATA_OUT(FB_B_DATA)
                     );
 
-
+*/
     VGA_Sig_Gen sigGen(.CLK(CLK),
                        .RESET(RESET),
                        .CONFIG_COLOURS({Colours[1], Colours[0]}),
