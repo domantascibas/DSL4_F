@@ -9,8 +9,8 @@
 // Project Name: 	 Infrared Receiver for Remote Control Car
 // Target Devices: Digilent BASYS2
 // Tool versions:  ISE 14.4
-// Description: 	 Counter with frequency of 10Hz, setting SEND_PACKET_OUT high
-//						 10 times a second.
+// Description: Counter with frequency of 10Hz, setting SEND_PACKET_OUT high
+//		10 times a second.
 //
 // Dependencies: 	 N/A
 //

@@ -9,9 +9,12 @@
 // Project Name:
 // Target Devices:
 // Tool versions:
-// Description:
+// Description:	Module to code the 8 slide switches on the Basys 2, to be controlled
+//		by the microprocessor by accessing base address 0x80. The module takes
+//		the status of the board's switches and passes them through to the data
+//		bus when called upon by the instruction memory.
 //
-// Dependencies:
+// Dependencies: N/A
 //
 // Revision:
 // Revision 0.01 - File Created

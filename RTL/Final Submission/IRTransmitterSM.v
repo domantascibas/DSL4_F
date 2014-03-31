@@ -9,13 +9,13 @@
 // Project Name: 	 Infrared Receiver for Remote Control Car
 // Target Devices: Digilent BASYS2 FPGA
 // Tool versions:  ISE 14.4
-// Description: 	 Generates a clock used to communicate to the cars, whose frequency
-//						 depends on the target car.
-//						 State machine used to control the number of pulses that are set
-//						 in the signal packet that is sent to the receiver of the target
-//						 car. There are 7 states: IDLE,START,GAP,CAR_SELECT,RIGHT,LEFT,
-//						 BACK and FORWARD. Depending on the number of pulses in the direction
-//						 states, the car will respond by moving in that direction or not.
+// Description: Generates a clock used to communicate to the cars, whose frequency
+//		depends on the target car.
+//		State machine used to control the number of pulses that are set
+//		in the signal packet that is sent to the receiver of the target
+//		car. There are 7 states: IDLE,START,GAP,CAR_SELECT,RIGHT,LEFT,
+//		BACK and FORWARD. Depending on the number of pulses in the direction
+//		states, the car will respond by moving in that direction or not.
 //
 // Dependencies: 	 SendPacketCounter.v
 //
