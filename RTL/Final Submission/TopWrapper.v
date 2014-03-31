@@ -51,9 +51,9 @@ module TopWrapper(
 	output [3:0] SEG_SELECT,
 	output [7:0] DEC_OUT,
 
-    output [7:0] COLOUR_OUT,
-    output HS_OUT,
-    output VS_OUT,
+   //output [7:0] COLOUR_OUT,
+   //output HS_OUT,
+   //output VS_OUT,
 
 	output IR_LED
     );
@@ -106,7 +106,7 @@ CPU CPU(
 	.BUS_INTERRUPTS_RAISE(BUS_INTERRUPTS_RAISE),
 	.BUS_INTERRUPTS_ACK(BUS_INTERRUPTS_ACK)
 );
-
+/*
 //Instantiate VGA peripheral
 VGA_Wrapper VGA(
 	.CLK(CLK),
@@ -118,7 +118,7 @@ VGA_Wrapper VGA(
     .HS_OUT(HS_OUT),
     .VS_OUT(VS_OUT)
 );
-
+*/
 //Instantiate IR peripheral
 IRWrapper IR(
 	.CLK(CLK),
