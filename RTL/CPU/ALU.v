@@ -75,6 +75,12 @@ module ALU(
             4'hA: Out <= (IN_A > IN_B) ? 8'h01 : 8'h00;
             // A < B
             4'hB: Out <= (IN_A < IN_B) ? 8'h01 : 8'h00;
+            // A & B
+            4'hC: Out <= IN_A & IN_B;
+            // In IN_A toggle (IN_B) bit
+            4'hD: Out <= IN_A ^ (1 << (IN_B & 8'h07));
+            // in IN_B toggle (IN_A) bit
+            4'hE: Out <= IN_B ^ (1 << (IN_A & 8'h07));
             //Default A
             default: Out <= IN_A;
             endcase
