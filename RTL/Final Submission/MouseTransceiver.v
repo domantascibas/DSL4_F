@@ -202,7 +202,7 @@ assign MouseDy = (MouseStatusRaw[7]) ? (MouseStatusRaw[5] ? {MouseStatusRaw[5],8
 
 // calculate new mouse position
 assign MouseNewX = {1'b0,MouseX} + MouseDx;
-assign MouseNewY = {1'b0,MouseY} + MouseDy; //change to '-' if (0;0) at the top.
+assign MouseNewY = {1'b0,MouseY} + ~MouseDy+1; //change to '-' if (0;0) at the top.
 
 always@(posedge CLK) begin
 	if(RESET) begin
