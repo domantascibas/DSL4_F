@@ -9,9 +9,9 @@
 // Project Name: 	 Infrared Receiver for Remote Control Car
 // Target Devices: Digilent Basys2 FPGA
 // Tool versions:  Xilinx ISE 14.4
-// Description: 	 Simple multiplexer used to pass to the Wrapper's output the 
-//						 appropriate LED output signal depending on which switch has
-//						 been set by the user.
+// Description: Simple multiplexer used to pass to the Wrapper's output the 
+//		appropriate LED output signal depending on which switch has
+//		been set by the user.
 //
 // Dependencies: 
 //

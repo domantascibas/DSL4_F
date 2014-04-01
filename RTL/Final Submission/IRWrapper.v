@@ -9,14 +9,14 @@
 // Project Name: 	 Infrared Receiver for Remote Control Car
 // Target Devices: Digilent Basys2 FPGA
 // Tool versions:  Xilinx ISE 14.4
-// Description: 	 Program that uses the slide switches present on the Digilent
-//						 Basys2 to select the colour of car you wish to operate, and by
-//						 using the buttons on the board to control the direction of the
-//						 car.
+// Description:	Program that uses the slide switches present on the Digilent
+//		Basys2 to select the colour of car you wish to operate, and by
+//		using the buttons on the board to control the direction of the
+//		car.
 //
 // Dependencies: 	 IRTransmitterSM.v
-//						 SendPacketCounter.v
-//						 Mux.v
+//			 SendPacketCounter.v
+//			 MuxIR.v
 //
 // Revision: 
 // Revision 0.01 - File Created
