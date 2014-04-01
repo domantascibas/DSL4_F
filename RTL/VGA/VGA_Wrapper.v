@@ -73,7 +73,7 @@ module VGA_Wrapper(
     parameter LOW_ADDR_FB_REG_ADDR  = 8'hB3;
     parameter FB_DATA_REG_ADDR      = 8'hB4;
 
-    fb_mem_coregen FB(.clka(CLK),
+    fb_mem_coregen_m FB(.clka(CLK),
                       .wea(FB_WE),
                       .addra(FB_ADDR_REG[14:3]),
                       .dina(FB_DATA_IN),
