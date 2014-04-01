@@ -113,11 +113,11 @@ always@* begin
 	case(Curr_State)
 	//Initialise State - Wait here for 10ms before trying to initialise the mouse.
 	4'h0: begin
-		if(Curr_Counter == 15000000) begin // 1/100th sec at 50MHz clock
+		if(Curr_Counter == 24'd15000000) begin // 1/100th sec at 50MHz clock
 			Next_State = 4'h1;
 			Next_Counter = 0;
 		end else
-		Next_Counter = Curr_Counter + 1'b1;
+		Next_Counter = Curr_Counter + 24'd1;
 	end
 
 	//Start initialisation by sending FF
@@ -200,37 +200,37 @@ always@* begin
 			Next_State = 4'hA;
 			Next_Status = BYTE_READ;
 		end
-		Next_Counter = 0;
+		Next_Counter = 24'd0;
 		Next_ReadEnable = 1'b1;
 	end
 
 	//Wait for confirmation of a byte being received
 	//This byte will be the second of three, the Dx byte.
 	4'hA: begin
-		if((Curr_Counter > 500000) | (BYTE_ERROR_CODE != 2'b00))begin
+		if((Curr_Counter > 24'd500000) | (BYTE_ERROR_CODE != 2'b00))begin
 			Next_State = 4'h0;
-			Next_Counter = 0;
+			Next_Counter = 24'd0;
 		end else if(BYTE_READY) begin
 			Next_State = 4'hB;
 			Next_Dx = BYTE_READ;
-			Next_Counter = 0;
+			Next_Counter = 24'd0;
 		end else
-			Next_Counter = Curr_Counter + 1'b1;
+			Next_Counter = Curr_Counter + 24'd1;
 		Next_ReadEnable = 1'b1;
 	end
 
 	//Wait for confirmation of a byte being received
 	//This byte will be the third of three, the Dy byte.
 	4'hB: begin
-		if((Curr_Counter > 500000) | (BYTE_ERROR_CODE != 2'b00))begin
+		if((Curr_Counter > 24'd500000) | (BYTE_ERROR_CODE != 2'b00))begin
 			Next_State = 4'h0;
-			Next_Counter = 0;
+			Next_Counter = 24'd0;
 		end else if(BYTE_READY) begin
 			Next_State = 4'hC;
 			Next_Dy = BYTE_READ;
-			Next_Counter = 0;
+			Next_Counter = 24'd0;
 		end else
-			Next_Counter = Curr_Counter + 1'b1;
+			Next_Counter = Curr_Counter + 24'd1;
 		Next_ReadEnable = 1'b1;
 	end
 
@@ -243,7 +243,7 @@ always@* begin
 	//Default State
 	default: begin
 		Next_State = 4'h0;
-		Next_Counter = 0;
+		Next_Counter = 24'd0;
 		Next_SendByte = 1'b0;
 		Next_ByteToSend = 8'hFF;
 		Next_ReadEnable = 1'b0;
